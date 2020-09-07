@@ -291,7 +291,7 @@ namespace Magento.RestApi
             {
                 requestStream.Write(postDataBytes, 0, postDataBytes.Length);
             }
-            using (var response = postRequest.GetResponse())
+            using (var response = GetResponse(postRequest))
             {
                 var cookieheader = response.Headers["Set-Cookie"];
                 webClient.SetAdminHtmlFromCookie(cookieheader);
@@ -327,11 +327,30 @@ namespace Magento.RestApi
             var cookieContainer = new CookieContainer();
             cookieContainer.Add(new Uri(getRequest.RequestUri.GetLeftPart(UriPartial.Authority)), new Cookie("adminhtml", webClient.AdminHtml));
             getRequest.CookieContainer = cookieContainer;
-            using (var response = getRequest.GetResponse())
+            using (var response = GetResponse(getRequest))
             {
                 // The location contains the callback url and the oauth verifier
                 var location = response.Headers["location"];
                 return location.Substring(location.IndexOf("oauth_verifier=", StringComparison.Ordinal)).Replace("oauth_verifier=", "");
+            }
+        }
+
+        private WebResponse GetResponse(HttpWebRequest request)
+        {
+            try
+            {
+                return request.GetResponse();
+            }
+            catch (WebException e)
+            {
+                if (e.Message.Contains("302"))
+                {
+                    return e.Response;
+                }
+                else
+                {
+                    throw new MagentoApiException(string.Format("Unable to get response '{0}'.", request.RequestUri), e);
+                }
             }
         }
 
