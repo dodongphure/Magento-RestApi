@@ -362,5 +362,9 @@ namespace Magento.RestApi
         /// <param name="orderId"></param>
         /// <returns></returns>
         Task<MagentoApiResponse<Order>> GetOrderById(int orderId);
+
+        Task<MagentoApiResponse<Order>> CreateShipment(int orderId);
+
+        Task<MagentoApiResponse<Order>> CreateInvoice(int orderId);
     }
 }

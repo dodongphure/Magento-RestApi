@@ -1478,6 +1478,22 @@ namespace Magento.RestApi
             return await Execute<Order>(request);
         }
 
+        public async Task<MagentoApiResponse<Order>> CreateShipment(int orderId)
+        {
+            var request = CreateRequest("/api/rest/orders/{orderId}/ship", Method.POST);
+            request.AddParameter("orderId", orderId, ParameterType.UrlSegment);
+
+            return await Execute<Order>(request);
+        }
+
+        public async Task<MagentoApiResponse<Order>> CreateInvoice(int orderId)
+        {
+            var request = CreateRequest("/api/rest/orders/{orderId}/invoice", Method.POST);
+            request.AddParameter("orderId", orderId, ParameterType.UrlSegment);
+
+            return await Execute<Order>(request);
+        }
+
         #endregion
 
         #endregion
