@@ -1497,20 +1497,20 @@ namespace Magento.RestApi
             return await Execute<Order>(request);
         }
 
-        public async Task<MagentoApiResponse<Order>> CreateShipment(int orderId)
+        public async Task<MagentoApiResponse<object>> GetComment(int orderId)
         {
-            var request = CreateRequest("/api/rest/orders/{orderId}/ship", Method.POST);
+            var request = CreateRequest("/api/rest/orders/{orderId}/comments", Method.GET);
             request.AddParameter("orderId", orderId, ParameterType.UrlSegment);
 
-            return await Execute<Order>(request);
+            return await Execute<object>(request);
         }
 
-        public async Task<MagentoApiResponse<Order>> CreateInvoice(int orderId)
+        public async Task<MagentoApiResponse<object>> CreateShipmentAndInvoice(int orderId)
         {
-            var request = CreateRequest("/api/rest/orders/{orderId}/invoice", Method.POST);
+            var request = CreateRequest("/api/rest/orders/{orderId}/createShipmentAndInvoice", Method.GET);
             request.AddParameter("orderId", orderId, ParameterType.UrlSegment);
 
-            return await Execute<Order>(request);
+            return await Execute<object>(request);
         }
 
         #endregion
